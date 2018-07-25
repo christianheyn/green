@@ -4,7 +4,12 @@ import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
 
-import Estimate (isTimeValue)
+import Estimate (
+        isTimeValue
+        , getAllTimeValues
+        , resolvePointNumber
+        , calcEstimationToMinutes
+    )
 
 prop_reverse :: [Int] -> Bool
 prop_reverse xs = reverse (reverse xs) == xs
@@ -12,6 +17,7 @@ prop_reverse xs = reverse (reverse xs) == xs
 main :: IO ()
 main = hspec $ do
     describe "Estimate" $ do
+
         describe "isTimeValue" $ do
             it "returns false on empty string" $ do
                 isTimeValue "" `shouldBe` False
@@ -30,3 +36,32 @@ main = hspec $ do
                 isTimeValue "3.0m" `shouldBe` True
                 isTimeValue "0.3m" `shouldBe` True
                 isTimeValue "0.m" `shouldBe` True
+
+        describe "getAllTimeValues" $ do
+            it "returns empty list on empty string" $ do
+                getAllTimeValues "" `shouldBe` []
+            it "returns empty list when no timevalue found" $ do
+                getAllTimeValues "test test2 333" `shouldBe` []
+            it "returns list with timevalues" $ do
+                getAllTimeValues "3m test2 5h" `shouldBe` ["3m", "5h"]
+
+        describe "resolvePointNumber" $ do
+            it "adds zero to start when point is head" $ do
+                resolvePointNumber ".9" `shouldBe` 0.9
+            it "adds zero to end when point is last" $ do
+                resolvePointNumber "9." `shouldBe` 9.0
+            it "returns float" $ do
+                resolvePointNumber "9.4" `shouldBe` 9.4
+                resolvePointNumber "9" `shouldBe` 9.0
+
+        describe "calcEstimationToMinutes" $ do
+            it "gives 0 when no str does not contains of timevalues" $ do
+                calcEstimationToMinutes "" `shouldBe` 0
+                calcEstimationToMinutes "a b c 6" `shouldBe` 0
+            it "calculates time by timevalues" $ do
+                calcEstimationToMinutes "1h init" `shouldBe` 60.0
+                calcEstimationToMinutes "2h refactoring" `shouldBe` 120.0
+                calcEstimationToMinutes "1m sleep" `shouldBe` 1.0
+                calcEstimationToMinutes "0.5h coffee" `shouldBe` 30.0
+                calcEstimationToMinutes "0.5d coding" `shouldBe` 60.0 * 4
+                calcEstimationToMinutes ".5d coding" `shouldBe` 60.0 * 4
