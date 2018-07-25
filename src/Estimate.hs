@@ -2,7 +2,7 @@ module Estimate (
     isTimeValue
     , getAllTimeValues
     , resolvePointNumber
-    , calcEstimationToMinutes
+    , parseStrToMinutes
 ) where
 
 import Data.List (groupBy)
@@ -23,9 +23,8 @@ hasOnePoint x = (length $ filter ((==) '.') x) <= 1
 -- export
 isTimeValue :: String -> Bool
 isTimeValue str = length g == 2 && hasUnit && (hasOnePoint $ head g)
-    where
-    g = groupByNumeric str
-    hasUnit = (last g) `elem` _TIME_UNITS
+    where g = groupByNumeric str
+          hasUnit = (last g) `elem` _TIME_UNITS
 
 -- export
 getAllTimeValues :: String -> [String]
@@ -49,11 +48,10 @@ resolveTime hoursPerDay (n, unit)
     | otherwise = n
 
 -- TODO: hoursPerDay
-calcEstimationToMinutes :: String -> Float
-calcEstimationToMinutes str = foldl (+) 0 c
-    where
-    c = map (resolveTime 8) b
-    b = map mapFloat a
-    a = getAllTimeValues str
+parseStrToMinutes :: Float -> String -> Float
+parseStrToMinutes hoursPerDay str = foldl (+) 0 c
+    where c = map (resolveTime hoursPerDay) b
+          b = map mapFloat a
+          a = getAllTimeValues str
 
 

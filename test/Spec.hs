@@ -8,7 +8,7 @@ import Estimate (
         isTimeValue
         , getAllTimeValues
         , resolvePointNumber
-        , calcEstimationToMinutes
+        , parseStrToMinutes
     )
 
 prop_reverse :: [Int] -> Bool
@@ -54,14 +54,14 @@ main = hspec $ do
                 resolvePointNumber "9.4" `shouldBe` 9.4
                 resolvePointNumber "9" `shouldBe` 9.0
 
-        describe "calcEstimationToMinutes" $ do
+        describe "parseStrToMinutes" $ do
             it "gives 0 when no str does not contains of timevalues" $ do
-                calcEstimationToMinutes "" `shouldBe` 0
-                calcEstimationToMinutes "a b c 6" `shouldBe` 0
+                parseStrToMinutes 8 "" `shouldBe` 0
+                parseStrToMinutes 8 "a b c 6" `shouldBe` 0
             it "calculates time by timevalues" $ do
-                calcEstimationToMinutes "1h init" `shouldBe` 60.0
-                calcEstimationToMinutes "2h refactoring" `shouldBe` 120.0
-                calcEstimationToMinutes "1m sleep" `shouldBe` 1.0
-                calcEstimationToMinutes "0.5h coffee" `shouldBe` 30.0
-                calcEstimationToMinutes "0.5d coding" `shouldBe` 60.0 * 4
-                calcEstimationToMinutes ".5d coding" `shouldBe` 60.0 * 4
+                parseStrToMinutes 8 "1h init" `shouldBe` 60.0
+                parseStrToMinutes 8 "2h refactoring" `shouldBe` 120.0
+                parseStrToMinutes 8 "1m sleep" `shouldBe` 1.0
+                parseStrToMinutes 8 "0.5h coffee" `shouldBe` 30.0
+                parseStrToMinutes 8 "0.5d coding" `shouldBe` 60.0 * 4
+                parseStrToMinutes 8 ".5d coding" `shouldBe` 60.0 * 4
