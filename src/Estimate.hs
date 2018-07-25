@@ -47,11 +47,8 @@ resolveTime hoursPerDay (n, unit)
     | unit == "h" = n * 60
     | otherwise = n
 
--- TODO: hoursPerDay
 parseStrToMinutes :: Float -> String -> Float
 parseStrToMinutes hoursPerDay str = foldl (+) 0 c
     where c = map (resolveTime hoursPerDay) b
           b = map mapFloat a
           a = getAllTimeValues str
-
-
