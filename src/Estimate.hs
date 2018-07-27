@@ -38,14 +38,24 @@ resolvePointNumber str
     | last str == '.' = read $ str ++ ('0':[])
     | otherwise = read str
 
-mapFloat :: String -> (Float, String)
-mapFloat x = (resolvePointNumber $ init x, (last x):[])
+data TimeValue = TimeValue {
+    value :: Float
+    , unit :: String
+    , origin :: String
+}
 
-resolveTime :: Float -> (Float, String) -> Float
-resolveTime hoursPerDay (n, unit)
-    | unit == "d" = n * hoursPerDay * 60
-    | unit == "h" = n * 60
-    | otherwise = n
+mapFloat :: String -> TimeValue
+mapFloat x = TimeValue {
+        value = resolvePointNumber $ init x
+        , unit = (last x):[]
+        , origin = x
+    }
+
+resolveTime :: Float -> TimeValue -> Float
+resolveTime hoursPerDay tM
+    | unit tM == "d" = (value tM) * hoursPerDay * 60
+    | unit tM == "h" = (value tM) * 60
+    | otherwise = (value tM)
 
 parseStrToMinutes :: Float -> String -> Float
 parseStrToMinutes hoursPerDay str = foldl (+) 0 c
