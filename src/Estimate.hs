@@ -54,7 +54,8 @@ getAllTimeValues str = filter isTimeValue $ words str
 -- export
 resolvePointNumber :: String -> Float
 resolvePointNumber str
-    | str == [] = 0
+    | length str /= length (takeWhile isNumericChar str) = 0
+    | str == [] || str == "." || str == "-" = 0
     | head str == '.' = read $ ('0':str)
     | last str == '.' = read $ str ++ ('0':[])
     | "-." `isPrefixOf` str = read $ "-0" ++ tail str
