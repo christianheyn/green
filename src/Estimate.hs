@@ -9,7 +9,7 @@ module Estimate (
     , parseStrToMinutes
 ) where
 
-import           Data.List (groupBy, isSuffixOf)
+import           Data.List (groupBy, isSuffixOf, isPrefixOf)
 
 _DAY_UNITS = ["d", "day", "days"]
 _HOUR_UNITS = ["h", "hour", "hours"]
@@ -57,6 +57,7 @@ resolvePointNumber str
     | str == [] = 0
     | head str == '.' = read $ ('0':str)
     | last str == '.' = read $ str ++ ('0':[])
+    | "-." `isPrefixOf` str = read $ "-0" ++ tail str
     | otherwise = read str
 
 mapFloat :: String -> TimeValue

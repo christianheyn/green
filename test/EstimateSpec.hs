@@ -41,9 +41,14 @@ spec = do
         it "returns float" $ do
             resolvePointNumber "9.4" `shouldBe` 9.4
             resolvePointNumber "9" `shouldBe` 9.0
+        it "returns negative numbers" $ do
+            resolvePointNumber "-9.4" `shouldBe` -9.4
+            resolvePointNumber "-9" `shouldBe` -9.0
+            resolvePointNumber "-9" `shouldBe` -9.0
+            resolvePointNumber "-.9" `shouldBe` -0.9
 
     describe "parseStrToMinutes" $ do
-        it "gives 0 when no str does not contains of timevalues" $ do
+        it "gives 0 when str does not contains of timevalues" $ do
             parseStrToMinutes 8 "" `shouldBe` 0
             parseStrToMinutes 8 "a b c 6" `shouldBe` 0
         it "calculates days from string" $ do -- Days
@@ -67,3 +72,8 @@ spec = do
             parseStrToMinutes 8 "2.m 2.h 2.d" `shouldBe` 541.0 * 2
             parseStrToMinutes 8 "1min 1hour 1day" `shouldBe` 541.0
             parseStrToMinutes 8 "1minute 1hour 1day" `shouldBe` 541.0
+        it "calculates negativ unit numbers" $ do
+            parseStrToMinutes 8 "1m -1m" `shouldBe` 0
+            parseStrToMinutes 8 "1m something -1m" `shouldBe` 0
+            parseStrToMinutes 8 "1day something -4hours" `shouldBe` 240
+            -- TODO add more units
