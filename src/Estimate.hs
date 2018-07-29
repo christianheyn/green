@@ -1,27 +1,34 @@
 module Estimate (
-    isTimeValue
+      hasDayUnit
+    , hasHourUnit
+    , hasMinuteUnit
+    , hasTimeUnit
+    , isTimeValue
     , getAllTimeValues
     , resolvePointNumber
     , parseStrToMinutes
-    , parseText
-    , highlihgtTimeValues
 ) where
 
-import Data.List (groupBy, intercalate)
+import           Data.List (groupBy, isSuffixOf)
 
-_TIME_UNITS = ["d", "h", "m"]
+_DAY_UNITS = ["d", "day", "days"]
+_HOUR_UNITS = ["h", "hour", "hours"]
+_MINUTES_UNITS = ["m", "min", "minute", "minutes"]
+_TIME_UNITS = _DAY_UNITS ++ _HOUR_UNITS ++_MINUTES_UNITS
+
+makeUnitChecker unitsList str = True `elem` map findUnits unitsList
+    where findUnits = (\x -> x `isSuffixOf` str)
+
+hasDayUnit = makeUnitChecker _DAY_UNITS
+hasHourUnit = makeUnitChecker _HOUR_UNITS
+hasMinuteUnit = makeUnitChecker _MINUTES_UNITS
+hasTimeUnit = makeUnitChecker _TIME_UNITS
 
 data TimeValue = TimeValue {
-    value :: Float
-    , unit :: String
+      value  :: Float
+    , unit   :: String
     , origin :: String
 }
-
-isSpaceChar :: Char -> Bool
-isSpaceChar x = x `elem` [' ', '\t', '\n']
-
-bothSpaces :: Char -> Char -> Bool
-bothSpaces x y = (isSpaceChar x) == (isSpaceChar y)
 
 isNumericChar :: Char -> Bool
 isNumericChar x = x `elem` '-':'.':['0'..'9']
@@ -38,7 +45,7 @@ hasOnePoint x = (length $ filter ((==) '.') x) <= 1
 isTimeValue :: String -> Bool
 isTimeValue str = length g == 2 && hasUnit && (hasOnePoint $ head g)
     where g = groupByNumeric str
-          hasUnit = (last g) `elem` _TIME_UNITS
+          hasUnit = hasTimeUnit $ last g
 
 -- export
 getAllTimeValues :: String -> [String]
@@ -54,15 +61,15 @@ resolvePointNumber str
 
 mapFloat :: String -> TimeValue
 mapFloat x = TimeValue {
-        value = resolvePointNumber $ init x
-        , unit = (last x):[]
+          value = resolvePointNumber $ head $ groupByNumeric x
+        , unit = last $ groupByNumeric x
         , origin = x
     }
 
 resolveTime :: Float -> TimeValue -> Float
 resolveTime hoursPerDay tV
-    | unit tV == "d" = (value tV) * hoursPerDay * 60
-    | unit tV == "h" = (value tV) * 60
+    | unit tV `elem` _DAY_UNITS = (value tV) * hoursPerDay * 60
+    | unit tV `elem` _HOUR_UNITS = (value tV) * 60
     | otherwise = (value tV)
 
 -- export
@@ -71,17 +78,3 @@ parseStrToMinutes hoursPerDay str = foldl (+) 0 c
     where c = map (resolveTime hoursPerDay) b
           b = map mapFloat a
           a = getAllTimeValues str
-
--- export
-parseText :: String -> [String]
-parseText str = groupBy bothSpaces str
-
-wrapHighlight str = if isTimeValue str
-    then "\x1b[45m " ++ str ++ " \x1b[0m"
-    else str
-
--- export
-highlihgtTimeValues :: String -> String
-highlihgtTimeValues str = intercalate "" $
-    map wrapHighlight $
-    parseText str

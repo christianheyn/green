@@ -1,4 +1,18 @@
 module Main where
 
+import Printer (prettyPrint)
+
+-- init
+-- estimate-repl
+-- estimate
+-- estimate-export
+-- template
+-- undo
+
 main :: IO ()
-main = putStrLn "\ESC[45m 3d \ESC[0m \nund \ESC[45m 2h \ESC[0m and \ESC[45m .5m \ESC[0m"
+main = do
+    putStrLn "Schätze etwas!\n"
+    estimation <- getLine
+    putStrLn "\n"
+    putStrLn $ prettyPrint estimation
+    putStrLn "\n"
