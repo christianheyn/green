@@ -48,7 +48,7 @@ test-suite green-test
   main-is: Spec.hs
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fhpc
   build-depends:
       base >= 4.7 && < 5
     , green

@@ -3,12 +3,11 @@ module EstimateSpec (spec) where
 import           Estimate        (getAllTimeValues, isTimeValue,
                                   parseStrToMinutes, resolvePointNumber)
 import           Test.Hspec
+import           Test.Hspec.QuickCheck (modifyMaxSize)
 import           Test.QuickCheck
 
-prop_resolvePointNumber str = a <= 0 || a > 0
+prop_resolvePointNumber str = a + (-1 * a) == 0
     where a = resolvePointNumber str
-
-check1000Times = quickCheckWith stdArgs { maxSuccess = 1000 }
 
 spec :: Spec
 spec = do
@@ -52,7 +51,10 @@ spec = do
             resolvePointNumber "-9" `shouldBe` -9.0
             resolvePointNumber "-9" `shouldBe` -9.0
             resolvePointNumber "-.9" `shouldBe` -0.9
-            check1000Times prop_resolvePointNumber
+        modifyMaxSize (const 1000) $
+            it "works with every string" $
+                property prop_resolvePointNumber
+
     describe "parseStrToMinutes" $ do
         it "gives 0 when str does not contains of timevalues" $ do
             parseStrToMinutes 8 "" `shouldBe` 0
