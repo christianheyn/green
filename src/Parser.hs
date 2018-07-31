@@ -1,40 +1,20 @@
-module Estimate (
-      hasDayUnit
-    , hasHourUnit
-    , hasMinuteUnit
-    , hasTimeUnit
-    , isTimeValue
+module Parser (
+      isTimeValue
     , getAllTimeValues
     , resolvePointNumber
     , parseStrToMinutes
+    , parseText
 ) where
 
-import           Data.List (groupBy, isSuffixOf, isPrefixOf)
-
-_DAY_UNITS = ["d", "day", "days"]
-_HOUR_UNITS = ["h", "hour", "hours"]
-_MINUTES_UNITS = ["m", "min", "minute", "minutes"]
-_TIME_UNITS = _DAY_UNITS ++ _HOUR_UNITS ++_MINUTES_UNITS
-
-makeUnitChecker unitsList str = True `elem` map findUnits unitsList
-    where findUnits = (\x -> x `isSuffixOf` str)
-
-hasDayUnit = makeUnitChecker _DAY_UNITS
-hasHourUnit = makeUnitChecker _HOUR_UNITS
-hasMinuteUnit = makeUnitChecker _MINUTES_UNITS
-hasTimeUnit = makeUnitChecker _TIME_UNITS
+import           Consts
+import           Data.List (groupBy, isPrefixOf, isSuffixOf)
+import           Helper
 
 data TimeValue = TimeValue {
       value  :: Float
     , unit   :: String
     , origin :: String
 }
-
-isNumericChar :: Char -> Bool
-isNumericChar x = x `elem` '-':'.':['0'..'9']
-
-bothNumeric :: Char -> Char -> Bool
-bothNumeric x y = (isNumericChar x) == (isNumericChar y)
 
 groupByNumeric = groupBy bothNumeric
 
@@ -80,3 +60,7 @@ parseStrToMinutes hoursPerDay str = foldl (+) 0 c
     where c = map (resolveTime hoursPerDay) b
           b = map mapFloat a
           a = getAllTimeValues str
+
+-- export
+parseText :: String -> [String]
+parseText str = groupBy bothSpaces str

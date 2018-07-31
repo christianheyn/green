@@ -1,21 +1,11 @@
 module Printer (
-      parseText
-    , prettyPrint
+    prettyPrint
 ) where
 
+import           Consts
 import           Data.List (groupBy, intercalate)
-import           Estimate  (hasDayUnit, hasHourUnit, hasMinuteUnit, hasTimeUnit,
-                            isTimeValue)
-
-isSpaceChar :: Char -> Bool
-isSpaceChar x = x `elem` [' ', '\t', '\n']
-
-bothSpaces :: Char -> Char -> Bool
-bothSpaces x y = (isSpaceChar x) == (isSpaceChar y)
-
--- export
-parseText :: String -> [String]
-parseText str = groupBy bothSpaces str
+import           Parser  (parseText, isTimeValue)
+import           Helper    (hasDayUnit, hasHourUnit, hasMinuteUnit, hasTimeUnit)
 
 getColorStartStr str
     | hasDayUnit str = "\x1b[46m"

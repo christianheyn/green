@@ -1,7 +1,8 @@
-module EstimateSpec (spec) where
+module ParserSpec (spec) where
 
-import           Estimate        (getAllTimeValues, isTimeValue,
-                                  parseStrToMinutes, resolvePointNumber)
+import           Parser                (getAllTimeValues, isTimeValue,
+                                        parseStrToMinutes, parseText,
+                                        resolvePointNumber)
 import           Test.Hspec
 import           Test.Hspec.QuickCheck (modifyMaxSize)
 import           Test.QuickCheck
@@ -85,3 +86,9 @@ spec = do
             parseStrToMinutes 8 "1m something -1m" `shouldBe` 0
             parseStrToMinutes 8 "1day something -4hours" `shouldBe` 240
             -- TODO add more units
+    describe "parseText" $ do
+        it "returns empty list on empty string" $ do
+            parseText "" `shouldBe` []
+        it "returns words seperated from spaces as list" $ do
+            parseText "test test2  test3" `shouldBe` ["test", " ", "test2", "  ", "test3"]
+            parseText "  3h 2d" `shouldBe` ["  ", "3h", " ", "2d"]
