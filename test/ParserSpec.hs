@@ -15,21 +15,22 @@ spec = do
     describe "isTimeValue" $ do
         it "returns false on empty string" $ do
             isTimeValue "" `shouldBe` False
-        it "false on string contains just of alphabetical chars" $ do
+        it "returns false on string contains just of alphabetical chars" $ do
             isTimeValue "no" `shouldBe` False
-        it "false on string contains just of numerical chars" $ do
+        it "returns false on string contains just of numerical chars" $ do
             isTimeValue "34" `shouldBe` False
-        it "false on string contains of numerical and alphabetical chars in wrong order" $ do
+        it "returns false on string contains of numerical and alphabetical chars in wrong order" $ do
             isTimeValue "m34" `shouldBe` False
-        it "false on string contains more than one point" $ do
+        it "returns false on string contains more than one point" $ do
             isTimeValue "0..3m" `shouldBe` False
-        it "true on string contains of numerical and alphabetical(d, h, m) chars in right order" $ do
+        it "returns true on string representing a valid TimeValue" $ do
             isTimeValue "3d" `shouldBe` True
             isTimeValue "12h" `shouldBe` True
             isTimeValue "3m" `shouldBe` True
             isTimeValue "3.0m" `shouldBe` True
             isTimeValue "0.3m" `shouldBe` True
             isTimeValue "0.m" `shouldBe` True
+            isTimeValue "0.w" `shouldBe` True
 
     describe "getAllTimeValues" $ do
         it "returns empty list on empty string" $ do
@@ -37,7 +38,10 @@ spec = do
         it "returns empty list when no timevalue found" $ do
             getAllTimeValues "test test2 333" `shouldBe` []
         it "returns list with timevalues" $ do
-            getAllTimeValues "3m test2 5h" `shouldBe` ["3m", "5h"]
+            getAllTimeValues "3m 3min 3minute 3minutes" `shouldBe` ["3m", "3min", "3minute", "3minutes"]
+            getAllTimeValues "3h 3hour 3hours" `shouldBe` ["3h", "3hour", "3hours"]
+            getAllTimeValues "3d 3day 3days" `shouldBe` ["3d", "3day", "3days"]
+            getAllTimeValues "3w 3week 3weeks" `shouldBe` ["3w", "3week", "3weeks"]
 
     describe "resolvePointNumber" $ do
         it "adds zero to start when point is head" $ do
@@ -60,6 +64,10 @@ spec = do
         it "gives 0 when str does not contains of timevalues" $ do
             parseStrToMinutes 8 "" `shouldBe` 0
             parseStrToMinutes 8 "a b c 6" `shouldBe` 0
+        it "calculates weeks from string" $ do -- Days
+            parseStrToMinutes 8 "1w init" `shouldBe` 2400.0
+            parseStrToMinutes 8 "1week init" `shouldBe` 2400.0
+            parseStrToMinutes 8 "2weeks init" `shouldBe` 4800.0
         it "calculates days from string" $ do -- Days
             parseStrToMinutes 8 "1d init" `shouldBe` 480.0
             parseStrToMinutes 8 "1day init" `shouldBe` 480.0

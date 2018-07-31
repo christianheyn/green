@@ -48,11 +48,13 @@ mapFloat x = TimeValue {
         , origin = x
     }
 
+-- TODO: daysPerWeek as parameter
 resolveTime :: Float -> TimeValue -> Float
-resolveTime hoursPerDay tV
-    | unit tV `elem` _DAY_UNITS = (value tV) * hoursPerDay * 60
-    | unit tV `elem` _HOUR_UNITS = (value tV) * 60
-    | otherwise = (value tV)
+resolveTime hoursPerDay timeValue'                          --  v  --
+    | unit timeValue' `elem` _WEEK_UNITS = (value timeValue') * 5 * hoursPerDay * 60
+    | unit timeValue' `elem` _DAY_UNITS = (value timeValue') * hoursPerDay * 60
+    | unit timeValue' `elem` _HOUR_UNITS = (value timeValue') * 60
+    | otherwise = (value timeValue')
 
 -- export
 parseStrToMinutes :: Float -> String -> Float
