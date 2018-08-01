@@ -6,6 +6,7 @@ module Helper (
     , hasMinuteUnit
     , hasTimeUnit
     , isNumericChar
+    , dropSpaces
 ) where
 
 import           Consts
@@ -31,3 +32,6 @@ hasDayUnit = makeUnitChecker _DAY_UNITS
 hasHourUnit = makeUnitChecker _HOUR_UNITS
 hasMinuteUnit = makeUnitChecker _MINUTES_UNITS
 hasTimeUnit = makeUnitChecker _TIME_UNITS
+
+dropSpaces :: String -> String
+dropSpaces = dropWhile (`elem` [' ', '\t'])

@@ -3,34 +3,32 @@ module FileParser (
 ) where
 
 import           Data.List
+import           Helper     (dropSpaces)
 
 data CodeLine = CodeLine {
       number :: Int
-    , value :: String
+    , origin :: String
 } deriving (Show)
 
-mapCodeLine i v = CodeLine {
+mapCodeLine i o = CodeLine {
         number = i,
-        value = v
+        origin = o
     }
-
-dropSpaces :: String -> String
-dropSpaces = dropWhile (`elem` [' ', '\t'])
 
 isEmptyLine :: String -> Bool
 isEmptyLine str = length a == 0
     where a = dropSpaces str
 
-isComment :: String -> Bool
-isComment str = a b == '#'
+isLineComment :: String -> Bool
+isLineComment str = a b == '#'
     where a [] = 's'
           a xs = head xs
           b = dropSpaces str
 
 lineFilter l = not a && not b
-    where v = value l
-          a = isEmptyLine v
-          b = isComment v
+    where o = origin l
+          a = isEmptyLine o
+          b = isLineComment o
 
 lineFold acc line = acc ++ a:[]
     where a = mapCodeLine (length acc) line
