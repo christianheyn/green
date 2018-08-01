@@ -3,17 +3,8 @@ module FileParser (
 ) where
 
 import           Data.List
-import           Helper     (dropSpaces)
-
-data CodeLine = CodeLine {
-      number :: Int
-    , origin :: String
-} deriving (Show)
-
-mapCodeLine i o = CodeLine {
-        number = i,
-        origin = o
-    }
+import           DataTypes (CodeLine (..), makeCodeLine)
+import           Helper    (dropSpaces)
 
 isEmptyLine :: String -> Bool
 isEmptyLine str = length a == 0
@@ -31,7 +22,7 @@ lineFilter l = not a && not b
           b = isLineComment o
 
 lineFold acc line = acc ++ a:[]
-    where a = mapCodeLine (length acc) line
+    where a = makeCodeLine (length acc) line
 
 parseCodeLines :: String -> [CodeLine]
 parseCodeLines str = filter lineFilter allLines

@@ -1,6 +1,7 @@
 module Helper (
       bothNumeric
     , bothSpaces
+    , hasWeekUnit
     , hasDayUnit
     , hasHourUnit
     , hasMinuteUnit
@@ -28,6 +29,7 @@ bothSpaces x y = (isSpaceChar x) == (isSpaceChar y)
 makeUnitChecker unitsList str = True `elem` map findUnits unitsList
     where findUnits = (\x -> x `isSuffixOf` str)
 
+hasWeekUnit = makeUnitChecker _WEEK_UNITS
 hasDayUnit = makeUnitChecker _DAY_UNITS
 hasHourUnit = makeUnitChecker _HOUR_UNITS
 hasMinuteUnit = makeUnitChecker _MINUTES_UNITS
