@@ -1,6 +1,6 @@
 module Helper (
       bothNumeric
-    , bothSpaces
+    , bothSeparator
     , hasWeekUnit
     , hasDayUnit
     , hasHourUnit
@@ -19,11 +19,12 @@ isNumericChar x = x `elem` '-':'.':['0'..'9']
 bothNumeric :: Char -> Char -> Bool
 bothNumeric x y = (isNumericChar x) == (isNumericChar y)
 
-isSpaceChar :: Char -> Bool
-isSpaceChar x = x `elem` [' ', '\t', '\n']
+isSeparatorChar :: Char -> Bool
+isSeparatorChar x = x `elem` a
+    where a = [' ', '\t', '\n'] ++ [',', ';', '|', '+']
 
-bothSpaces :: Char -> Char -> Bool
-bothSpaces x y = (isSpaceChar x) == (isSpaceChar y)
+bothSeparator :: Char -> Char -> Bool
+bothSeparator x y = (isSeparatorChar x) == (isSeparatorChar y)
 
 
 makeUnitChecker unitsList str = True `elem` map findUnits unitsList

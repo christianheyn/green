@@ -8,7 +8,17 @@ module Parser (
 
 import           Consts
 import           Data.List (groupBy, isPrefixOf, isSuffixOf)
-import           Helper
+import           Helper (
+                      bothNumeric
+                    , bothSeparator
+                    , hasWeekUnit
+                    , hasDayUnit
+                    , hasHourUnit
+                    , hasMinuteUnit
+                    , hasTimeUnit
+                    , isNumericChar
+                    , dropSpaces
+                )
 
 data TimeValue = TimeValue {
       value  :: Float
@@ -65,4 +75,4 @@ parseStrToMinutes hoursPerDay str = foldl (+) 0 c
 
 -- export
 parseText :: String -> [String]
-parseText str = groupBy bothSpaces str
+parseText str = groupBy bothSeparator str

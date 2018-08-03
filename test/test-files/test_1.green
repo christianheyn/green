@@ -1,9 +1,10 @@
-import anderDatei.green
+@import ./path/to/file.green
     # comment
 @feature{}
     @title Feature Name!
     @id GRN-001
-    @tags[] frontend,
+    @tags[] frontend, ad, asasd
     # standard für estimation
     @likelyCase
-        3w und 3week 3d 3day 6 3minutes ; # noComment;
+        3w und -.3week    -4d -2.8m  3.0d  -3day  , -3minute, 2day,
+        4days und -6h testing fff # noComment;
