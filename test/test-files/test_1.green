@@ -1,10 +1,27 @@
-@import ./path/to/file.green
-    # comment
+@import ./basic.green
+@import ./frontend.green
+
+@template{}
+    @id Kundenkürzel
+    @cssPaths[] ./template.css, ./template2.css,
+
+# comment
 @feature{}
+    @status DONE
     @title Feature Name!
     @id GRN-001
     @tags[] frontend, ad, asasd
+    @steps[]
+          step1
+        , step2
+        , step3
     # standard für estimation
     @likelyCase
-        3w und -.3week    -4d -2.8m  3.0d  -3day  , -3minute, 2day,
-        4days und -6h testing fff # noComment;
+        3w und -.3week -4d -2.8m  3.0d -3day  , -3minute, 2day,
+        4days und -6h ;testing fff #noComment; 6 6d
+    @comment[]
+    @interDesc
+
+
+@todo{}
+    @title fix something
