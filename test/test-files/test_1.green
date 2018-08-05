@@ -17,7 +17,7 @@
         , step3
     # standard für estimation
     @likelyCase
-        3w und -.3week -4d -2.8m  3.0d -3day  , -3minute, 2day,
+        3w und -.3week,-4d,-2.8m  3.0d -3day  , -3minute, 2day,
         4days und -6h ;testing fff #noComment; 6 6d
     @comment[]
     @interDesc

@@ -38,7 +38,7 @@ spec = do
         it "returns empty list when no timevalue found" $ do
             getAllTimeValues "test test2 333" `shouldBe` []
         it "returns list with timevalues" $ do
-            getAllTimeValues "3m 3min 3minute 3minutes" `shouldBe` ["3m", "3min", "3minute", "3minutes"]
+            getAllTimeValues "3m 3minute 3minutes" `shouldBe` ["3m", "3minute", "3minutes"]
             getAllTimeValues "3h 3hour 3hours" `shouldBe` ["3h", "3hour", "3hours"]
             getAllTimeValues "3d 3day 3days" `shouldBe` ["3d", "3day", "3days"]
             getAllTimeValues "3w 3week 3weeks" `shouldBe` ["3w", "3week", "3weeks"]
@@ -79,7 +79,6 @@ spec = do
             parseStrToMinutes 8 "1hours init" `shouldBe` 60.0
         it "calculates minutes from string" $ do -- Minutes
             parseStrToMinutes 8 "1m init" `shouldBe` 1.0
-            parseStrToMinutes 8 "1min init" `shouldBe` 1.0
             parseStrToMinutes 8 "1minute init" `shouldBe` 1.0
             parseStrToMinutes 8 "4minutes init" `shouldBe` 4.0
         it "calculates mixed units from string" $ do
@@ -87,7 +86,7 @@ spec = do
             parseStrToMinutes 8 "1.0m 1.0h 1.0d" `shouldBe` 541.0
             parseStrToMinutes 8 "2.0m 2.0h 2.0d" `shouldBe` 541.0 * 2
             parseStrToMinutes 8 "2.m 2.h 2.d" `shouldBe` 541.0 * 2
-            parseStrToMinutes 8 "1min 1hour 1day" `shouldBe` 541.0
+            parseStrToMinutes 8 "1minute 1hour 1day" `shouldBe` 541.0
             parseStrToMinutes 8 "1minute 1hour 1day" `shouldBe` 541.0
         it "calculates negativ unit numbers" $ do
             parseStrToMinutes 8 "1m -1m" `shouldBe` 0
