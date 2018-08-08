@@ -9,7 +9,7 @@ data CodeLine = CodeLine {
       number    :: Int
     , origin    :: String
     , indention :: Int
-    , tag :: (String, String)
+    , tag       :: (String, String)
 } deriving (Show)
 
 makeCodeLine i lineStr = CodeLine {

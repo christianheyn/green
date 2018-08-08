@@ -1,5 +1,6 @@
 @import ./basic.green
-@import ./frontend.green
+@import
+    ./frontend.green
 
 @template{}
     @id Kundenkürzel
