@@ -8,6 +8,7 @@ import Printer (prettyPrint)
 -- estimate-export
 -- template
 -- undo
+-- $ git blame -L 150,+1 -- fileName.js
 
 main :: IO ()
 main = do

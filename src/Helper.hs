@@ -8,6 +8,9 @@ module Helper (
     , hasTimeUnit
     , isNumericChar
     , dropSpaces
+    , isEmptyLine
+    , isLineComment
+    , getTagInfo
 ) where
 
 import           Consts
@@ -26,7 +29,6 @@ isSeparatorChar x = x `elem` a
 bothSeparator :: Char -> Char -> Bool
 bothSeparator x y = (isSeparatorChar x) == (isSeparatorChar y)
 
-
 makeUnitChecker unitsList str = True `elem` map findUnits unitsList
     where findUnits = (\x -> x `isSuffixOf` str)
 
@@ -38,3 +40,25 @@ hasTimeUnit = makeUnitChecker _TIME_UNITS
 
 dropSpaces :: String -> String
 dropSpaces = dropWhile (`elem` [' ', '\t'])
+
+isEmptyLine :: String -> Bool
+isEmptyLine str = length a == 0
+    where a = dropSpaces str
+
+isLineComment :: String -> Bool
+isLineComment str = a b == '#'
+    where a [] = 's'
+          a xs = head xs
+          b = dropSpaces str
+
+type TagName = String
+type TagTypeDeclaration = String
+getTagInfo :: String -> (TagName, TagTypeDeclaration)
+getTagInfo str = if head firstWord /= '@' then ("?", "?") else (firstWord, tagType)
+    where tagType = if ("{}" `isSuffixOf` firstWord)
+                        then "Object"
+                        else if ("[]" `isSuffixOf` firstWord)
+                            then "List"
+                            else "?"
+          firstWord = head $ words str'
+          str' = dropSpaces str
