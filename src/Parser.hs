@@ -64,7 +64,7 @@ resolveTime hoursPerDay timeValue'                          --  v  --
     | unit timeValue' `elem` _WEEK_UNITS = (value timeValue') * 5 * hoursPerDay * 60
     | unit timeValue' `elem` _DAY_UNITS = (value timeValue') * hoursPerDay * 60
     | unit timeValue' `elem` _HOUR_UNITS = (value timeValue') * 60
-    | otherwise = (value timeValue')
+    | otherwise = value timeValue'
 
 -- export
 parseStrToMinutes :: Float -> String -> Float
