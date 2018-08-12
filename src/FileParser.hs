@@ -1,5 +1,6 @@
 module FileParser (
-    parseCodeLines
+      parseCodeLines
+    , CodeLine (..)
 ) where
 
 import           Data.List

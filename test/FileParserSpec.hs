@@ -1,7 +1,6 @@
 module FileParserSpec (spec) where
 
-import           DataTypes  (CodeLine (..))
-import           FileParser (parseCodeLines)
+import           FileParser (parseCodeLines, CodeLine (..))
 import           System.IO
 import           Test.Hspec
 

@@ -81,6 +81,8 @@ spec = do
             parseStrToMinutes 8 "1m init" `shouldBe` 1.0
             parseStrToMinutes 8 "1minute init" `shouldBe` 1.0
             parseStrToMinutes 8 "4minutes init" `shouldBe` 4.0
+            parseStrToMinutes 8 "0.3minute init" `shouldBe` 0.3
+            parseStrToMinutes 8 "0.3333minute init" `shouldBe` 0.3333
         it "calculates mixed units from string" $ do
             parseStrToMinutes 8 "1m 1h 1d" `shouldBe` 541.0
             parseStrToMinutes 8 "1.0m 1.0h 1.0d" `shouldBe` 541.0
@@ -88,10 +90,12 @@ spec = do
             parseStrToMinutes 8 "2.m 2.h 2.d" `shouldBe` 541.0 * 2
             parseStrToMinutes 8 "1minute 1hour 1day" `shouldBe` 541.0
             parseStrToMinutes 8 "1minute 1hour 1day" `shouldBe` 541.0
+            parseStrToMinutes 8 "1.2minute 1.2222hour 1.98day -.932m" `shouldBe` 1024.0
         it "calculates negativ unit numbers" $ do
             parseStrToMinutes 8 "1m -1m" `shouldBe` 0
             parseStrToMinutes 8 "1m something -1m" `shouldBe` 0
             parseStrToMinutes 8 "1day something -4hours" `shouldBe` 240
+            parseStrToMinutes 8 "1.5day something" `shouldBe` (1.5 * 8 * 60)
             -- TODO add more units
     describe "parseText" $ do
         it "returns empty list on empty string" $ do

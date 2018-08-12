@@ -14,7 +14,7 @@ module Helper (
 ) where
 
 import           Consts
-import           Data.List (groupBy, isSuffixOf, isPrefixOf)
+import           Data.List (isSuffixOf, isPrefixOf)
 
 isNumericChar :: Char -> Bool
 isNumericChar x = x `elem` '-':'.':['0'..'9']
