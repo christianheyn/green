@@ -10,7 +10,6 @@ module Helper (
     , dropSpaces
     , isEmptyLine
     , isLineComment
-    , getTagInfo
 ) where
 
 import           Consts
@@ -50,15 +49,3 @@ isLineComment str = a b == '#'
     where a [] = 's'
           a xs = head xs
           b = dropSpaces str
-
-type TagName = String
-type TagTypeDeclaration = String
-getTagInfo :: String -> (TagName, TagTypeDeclaration)
-getTagInfo str = if head firstWord /= '@' then ("?", "?") else (firstWord, tagType)
-    where tagType = if ("{}" `isSuffixOf` firstWord)
-                        then "Object"
-                        else if ("[]" `isSuffixOf` firstWord)
-                            then "List"
-                            else "?"
-          firstWord = head $ words str'
-          str' = dropSpaces str

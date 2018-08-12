@@ -1,6 +1,6 @@
 module FileParserSpec (spec) where
 
-import           FileParser (parseCodeLines, CodeLine (..))
+import           FileParser (parseCodeLines, CodeLine (..), getCodeLineType)
 import           System.IO
 import           Test.Hspec
 
@@ -22,10 +22,10 @@ spec = do
             (length $ parseCodeLines "    ") `shouldBe` 0
         it "gives empty list on string contains of tabs" $ do
             (length $ parseCodeLines "      ") `shouldBe` 0
-        it "gives empty list on string contains of lines with comments" $ do
-            (length $ parseCodeLines "#comment1\n\n#comment2\n   ") `shouldBe` 0
+        it "gives list on string contains of lines with comments" $ do
+            (length $ parseCodeLines "#comment1\n\n#comment2\n   ") `shouldBe` 2
         it "gives list of CodeLines" $ do
-            (length $ parseCodeLines _TEST_STRING_1) `shouldBe` 3
+            (length $ parseCodeLines _TEST_STRING_1) `shouldBe` 4
             let parsedLines = parseCodeLines _TEST_STRING_1
             (origin $ head parsedLines) `shouldBe` "Line1"
             (origin $ last parsedLines) `shouldBe` "Line4"
@@ -38,14 +38,12 @@ spec = do
             let parsedLines2 = parseCodeLines _TEST_STRING_2
             (number $ head parsedLines2) `shouldBe` 0
             (number $ last parsedLines2) `shouldBe` 3
-
-        it "every CodeLine stores its tag type" $ do
-            let parsedLines = parseCodeLines _TEST_STRING_1
-            (fst $ tag $ head parsedLines) `shouldBe` "?"
-            (fst $ tag $ last parsedLines) `shouldBe` "?"
-            (snd $ tag $ head parsedLines) `shouldBe` "?"
-            (snd $ tag $ last parsedLines) `shouldBe` "?"
-
-            let parsedLines2 = parseCodeLines _TEST_STRING_2
-            (fst $ tag $ last parsedLines2) `shouldBe` "@feature{}"
-            (snd $ tag $ last parsedLines2) `shouldBe` "Object"
+    describe "getCodeLineType" $ do
+        it "gives pair with line type" $ do
+            getCodeLineType "   @feature{}" `shouldBe` ("OBJECT", "feature")
+            getCodeLineType "   # a comment" `shouldBe` ("COMMENT", "?")
+            getCodeLineType " @tags[]" `shouldBe` ("LIST", "tags")
+            getCodeLineType " @title" `shouldBe` ("PROPERTY", "title")
+            getCodeLineType "    some text" `shouldBe` ("VALUE", "?")
+            getCodeLineType " @" `shouldBe` ("SYNTAX_ERROR","MissingTagName")
+            getCodeLineType " @ space" `shouldBe` ("SYNTAX_ERROR","MissingTagName")

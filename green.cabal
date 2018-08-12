@@ -29,8 +29,7 @@ library
   build-depends:
       base >= 4.7 && < 5
   exposed-modules:
-        DataTypes
-      , Parser
+        Parser
       , FileParser
       , Printer
       , Helper
