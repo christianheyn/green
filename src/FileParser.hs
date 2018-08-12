@@ -42,7 +42,7 @@ data CodeLine = CodeLine {
 } deriving (Show)
 
 makeCodeLine i lineStr = CodeLine {
-          number = i
+          number = i + 1
         , origin = dropSpaces lineStr
         , indention = a - b
         , isType = getCodeLineType lineStr

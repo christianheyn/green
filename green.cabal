@@ -27,7 +27,8 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >= 4.7 && < 5
+        base >= 4.7 && < 5
+      , directory
   exposed-modules:
         Parser
       , FileParser
@@ -43,6 +44,7 @@ executable green-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >= 4.7 && < 5
+    , directory
     , green
   default-language: Haskell2010
 
