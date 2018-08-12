@@ -28,29 +28,30 @@ type TagName = String
 -- <- (OBJECT | LIST | PROPERTY | VALUE | COMMENT)
 getCodeLineType :: String -> (LineType, TagName)
 getCodeLineType str
-    | head firstWord == '#' = ("COMMENT", "?")
-    | head firstWord == '@' = resolveLineType firstWord
+    | firstChar == '#' = ("COMMENT", "?")
+    | firstChar == '@' = resolveLineType firstWord
     | otherwise = ("VALUE", "?")
-    where firstWord = head $ words str'
+    where firstChar = head firstWord
+          firstWord = head $ words str'
           str' = dropSpaces str
 
 data CodeLine = CodeLine {
-    number    :: Int
-    , origin    :: String
-    , indention :: Int
-    , isType    :: (LineType, TagName)
+    codeLineNumber      :: Int
+    , codeLineOrigin    :: String
+    , codeLineIndention :: Int
+    , codeLineType      :: (LineType, TagName)
 } deriving (Show)
 
 makeCodeLine i lineStr = CodeLine {
-          number = i + 1
-        , origin = dropSpaces lineStr
-        , indention = a - b
-        , isType = getCodeLineType lineStr
+          codeLineNumber = i + 1
+        , codeLineOrigin = dropSpaces lineStr
+        , codeLineIndention = a - b
+        , codeLineType = getCodeLineType lineStr
     } where a = length lineStr
             b = length $ dropSpaces lineStr
 
 lineFilter l = not a
-    where o = origin l
+    where o = codeLineOrigin l
           a = isEmptyLine o
 
 lineFold acc line = acc ++ a:[]
@@ -60,3 +61,10 @@ lineFold acc line = acc ++ a:[]
 parseCodeLines :: String -> [CodeLine]
 parseCodeLines str = filter lineFilter allLines
     where allLines = foldl lineFold [] $ lines str
+
+data CodeBlock = CodeBlock {
+      codeBlockType        :: String
+    , codeBlockLineNumbers :: [Int]
+    , codeBlockValue       :: String
+    , codeBlockChildren    :: [CodeBlock]
+}

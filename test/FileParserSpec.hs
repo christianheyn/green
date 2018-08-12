@@ -24,17 +24,17 @@ spec = do
         it "gives list of CodeLines" $ do
             (length $ parseCodeLines _TEST_STRING_1) `shouldBe` 4
             let parsedLines = parseCodeLines _TEST_STRING_1
-            (origin $ head parsedLines) `shouldBe` "Line1"
-            (origin $ last parsedLines) `shouldBe` "Line4"
-            (indention $ last parsedLines) `shouldBe` 4
-        it "every CodeLine stores its index (number)" $ do
+            (codeLineOrigin $ head parsedLines) `shouldBe` "Line1"
+            (codeLineOrigin $ last parsedLines) `shouldBe` "Line4"
+            (codeLineIndention $ last parsedLines) `shouldBe` 4
+        it "every CodeLine stores its index (codeLineNumber)" $ do
             let parsedLines = parseCodeLines _TEST_STRING_1
-            (number $ head parsedLines) `shouldBe` 2
-            (number $ last parsedLines) `shouldBe` 5
+            (codeLineNumber $ head parsedLines) `shouldBe` 2
+            (codeLineNumber $ last parsedLines) `shouldBe` 5
 
             let parsedLines2 = parseCodeLines _TEST_STRING_2
-            (number $ head parsedLines2) `shouldBe` 1
-            (number $ last parsedLines2) `shouldBe` 4
+            (codeLineNumber $ head parsedLines2) `shouldBe` 1
+            (codeLineNumber $ last parsedLines2) `shouldBe` 4
 
     describe "getCodeLineType" $ do
         it "gives pair with line type" $ do
